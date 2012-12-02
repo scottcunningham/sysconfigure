@@ -1,0 +1,8 @@
+With a new Ubuntu/Debian install, sysconfigure will do the following:
+
+- Install all the nice packages from `pkgs` file
+    - This includes vim, git, zsh, and some other nice utils that I routinely use for work
+- Clone my vim config from bitbucket (forked from mikesligo - credit goes to him for extensive vim config: http://github.com/mikesligo)
+- Clone zshrc from my bitbucket
+- Change shell to zsh
+- Install real google-chrome from deb (assuming I'm using 64-bit Linux for now... 99% of the time I would be!)

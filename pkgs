@@ -3,4 +3,4 @@ zsh
 rsync wget curl
 clang coco-cs monodevelop eclipse 
 vim geany
-xelatex
+texlive-xetex

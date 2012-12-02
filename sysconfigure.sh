@@ -3,12 +3,12 @@
 # Scott Cunningham <cunninsc@tcd.ie>
 # http://bitbucket.com/scottbpc/sysconfigure
 
+echo_colour haha
+
 SYSCONFIGURE_PATH=`pwd`
 DATETIME=`date | sed s/' '/-/g | sed s/:/_/g`
 
 echo $DATETIME
-
-exit
 
 # Should always start this script in $HOME
 cd 

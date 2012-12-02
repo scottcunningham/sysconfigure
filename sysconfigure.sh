@@ -68,6 +68,15 @@ sudo apt-get -f install
 
 rm chrome-$DATETIME.deb
 
+echo "Installing google talk plugin"
+wget https://dl.google.com/linux/direct/google-talkplugin_current_amd64.deb -O google-talk-$DATETIME.deb
+sudo dpkg -i google-talk-$DATETIME.deb
+
+# Fix any broken dependencies that this leaves behind too
+sudo apt-get -f install
+
+rm google-talk-$DATETIME.deb
+
 # Go $HOME
 echo "Done!"
 cd

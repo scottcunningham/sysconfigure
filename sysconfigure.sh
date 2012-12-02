@@ -4,7 +4,11 @@
 # http://bitbucket.com/scottbpc/sysconfigure
 
 SYSCONFIGURE_PATH=`pwd`
-DATETIME=`date | sed s/' '/-/g`
+DATETIME=`date | sed s/' '/-/g | sed s/:/_/g`
+
+echo $DATETIME
+
+exit
 
 # Should always start this script in $HOME
 cd 

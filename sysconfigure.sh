@@ -26,8 +26,6 @@ elif cat /etc/issue | grep -i ubuntu > /dev/null
 		UPDATE_CMD="apt-get update"
 fi
 
-exit
-
 echo $DATETIME
 
 # Should always start this script in $HOME

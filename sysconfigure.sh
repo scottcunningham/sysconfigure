@@ -6,6 +6,28 @@
 SYSCONFIGURE_PATH=`pwd`
 DATETIME=`date | sed s/' '/-/g | sed s/:/_/g`
 
+if cat /etc/issue | grep -i suse > /dev/null
+	then 
+		PKG_INSTALLER='zypper install'
+		ARCHIVE_INSTALLER='rpm -i'
+		PKG_TYPE='rpm'
+		UPDATE_CMD="zypper refresh"
+elif cat /etc/issue | grep -i debian > /dev/null
+	then 
+		INSTALLER='apt-get install'
+		PKG_INSTALLER='dpkg -i'
+		PKG_TYPE='deb'
+		UPDATE_CMD="apt-get update"
+elif cat /etc/issue | grep -i ubuntu > /dev/null
+	then 
+		INSTALLER='apt-get install'
+		PKG_INSTALLER='dpkg -i'
+		PKG_TYPE='deb'
+		UPDATE_CMD="apt-get update"
+fi
+
+exit
+
 echo $DATETIME
 
 # Should always start this script in $HOME
@@ -14,7 +36,7 @@ cd
 # Install packages
 if [ -f $SYSCONFIGURE_PATH/pkgs ]
     echo Installing `cat $SYSCONFIGURE_PATH/pkgs`
-    then sudo apt-get update && sudo apt-get install `cat $SYSCONFIGURE_PATH/pkgs`
+    then sudo $UPDATE_CMD && sudo $PKG_INSTALLER `cat $SYSCONFIGURE_PATH/pkgs`
 else
     echo "File ´pkgs´ missing in folder $SYSCONFIGUREPATH"
     exit 1
@@ -29,8 +51,11 @@ git config --global user.email "cunninsc@tcd.ie"
 
 # Get shell config
 echo "Fetching zsh config from bitbucket"
-mv .zshrc .zshrc.$DATETIME.old
-git clone https://scottbpc@bitbucket.org/scottbpc/.zshrc.git
+if [ -f .zshrc ] 
+	then mv .zshrc .zshrc.$DATETIME.old
+fi
+git clone https://scottbpc@bitbucket.org/scottbpc/zshrc.git
+ln -s zshrc/.zshrc .
 
 # Change shell - this won´t work until we fully log out/in though 
 echo "Changing shell to zsh"
@@ -62,22 +87,22 @@ git pull origin master
 git submodule foreach git pull origin master
 
 echo "Installing google-chrome"
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O chrome-$DATETIME.deb
-sudo dpkg -i chrome-$DATETIME.deb
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.$PKG_TYPE -O chrome-$DATETIME.$PKG_TYPE
+sudo $PKG_INSTALLER chrome-$DATETIME.$PKG_TYPE
 
 # Fix any broken dependencies that Chrome leaves behind
 sudo apt-get -f install
 
-rm chrome-$DATETIME.deb
+rm chrome-$DATETIME.$PKG_TYPE
 
 echo "Installing google talk plugin"
-wget https://dl.google.com/linux/direct/google-talkplugin_current_amd64.deb -O google-talk-$DATETIME.deb
-sudo dpkg -i google-talk-$DATETIME.deb
+wget https://dl.google.com/linux/direct/google-talkplugin_current_amd64.$PKG_TYPE -O google-talk-$DATETIME.$PKG_TYPE
+sudo $PKG_INSTALLER google-talk-$DATETIME.$PKG_TYPE
 
 # Fix any broken dependencies that this leaves behind too
 sudo apt-get -f install
 
-rm google-talk-$DATETIME.deb
+rm google-talk-$DATETIME.$PKG_TYPE
 
 # Go $HOME
 echo "Done!"

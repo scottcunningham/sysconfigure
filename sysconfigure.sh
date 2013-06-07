@@ -34,7 +34,7 @@ cd
 # Install packages
 if [ -f $SYSCONFIGURE_PATH/pkgs ]
     echo Installing `cat $SYSCONFIGURE_PATH/pkgs`
-    then sudo $UPDATE_CMD && sudo $PKG_INSTALLER `cat $SYSCONFIGURE_PATH/pkgs`
+    then sudo $UPDATE_CMD && sudo $INSTALLER `cat $SYSCONFIGURE_PATH/pkgs`
 else
     echo "File ´pkgs´ missing in folder $SYSCONFIGUREPATH"
     exit 1

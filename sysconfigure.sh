@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 
 # Scott Cunningham <cunninsc@tcd.ie>
 # http://bitbucket.com/scottbpc/sysconfigure
@@ -45,15 +45,20 @@ echo
 echo Setting up git
 sleep 1
 git config --global user.name "Scott Cunningham"
-git config --global user.email "cunninsc@tcd.ie"
+git config --global user.email "scottcunningham92@gmail.com"
 
 # Get shell config
 echo "Fetching zsh config from bitbucket"
 if [ -f .zshrc ] 
 	then mv .zshrc .zshrc.$DATETIME.old
 fi
-git clone https://scottbpc@bitbucket.org/scottbpc/zshrc.git
-ln -s zshrc/.zshrc .
+
+cd src
+
+git clone https://github.com/scottcunningham/dotfiles
+cd dotfiles
+./install.sh
+cd
 
 # Change shell - this won´t work until we fully log out/in though 
 echo "Changing shell to zsh"
@@ -61,7 +66,7 @@ chsh -s `which zsh`
 
 # Get vim config
 echo "Backing up old vim config in format .vim{,rc}.\$DATE.old"
-if [ -f .vimrc ] 
+    if [ -f .vimrc ] 
 then
     echo "Backing up vimrc"
     mv .vimrc .vimrc.$DATETIME.old
@@ -72,35 +77,11 @@ then
     mv .vim .vim.$DATETIME.old
 fi
 
-echo "Grabbing vim config/plugins from bitbucket"
-git clone https://scottbpc@bitbucket.org/scottbpc/.vim.git
-cd .vim 
+cd src
+echo "Grabbing vim config/plugins from Github"
+git clone https://github.com/scottcunningham/vimrc
 
-ln -s .vim/.vimrc ~/
-git submodule init
-git submodule update --recursive
-
-# update vim plugins 
-git pull origin master
-git submodule foreach git pull origin master
-
-echo "Installing google-chrome"
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.$PKG_TYPE -O chrome-$DATETIME.$PKG_TYPE
-sudo $PKG_INSTALLER chrome-$DATETIME.$PKG_TYPE
-
-# Fix any broken dependencies that Chrome leaves behind
-sudo apt-get -f install
-
-rm chrome-$DATETIME.$PKG_TYPE
-
-echo "Installing google talk plugin"
-wget https://dl.google.com/linux/direct/google-talkplugin_current_amd64.$PKG_TYPE -O google-talk-$DATETIME.$PKG_TYPE
-sudo $PKG_INSTALLER google-talk-$DATETIME.$PKG_TYPE
-
-# Fix any broken dependencies that this leaves behind too
-sudo apt-get -f install
-
-rm google-talk-$DATETIME.$PKG_TYPE
+ln -s vimrc/vimrc ~/.vimrc
 
 # Go $HOME
 echo "Done!"

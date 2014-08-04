@@ -1,6 +1,5 @@
-git git-svn git-cvs subversion 
+i3 dunst firefox feh terminator
+python ipython python-pip 
+git
 zsh 
-rsync wget curl
-clang coco-cs monodevelop eclipse 
-vim geany
-texlive-xetex
+vim-nox
